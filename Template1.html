@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - By Visalini P</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue", sans-serif;
+        box-sizing: border-box;
+    }
+    body {
+        background-color: #8bc6ec;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        background: #000000;
+        padding: 25px;
+        width: 350px;
+        border-radius: 10px;
+    }
+    .calc-text {
+        margin-bottom: 20px;
+        padding-left: 5px;
+    }
+    .calc-text p {
+        width: 100%;
+        font-size: 3.5rem;
+        text-align: end;
+        background: transparent;
+        color: #fff;
+        border: none;
+        outline: none;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+    button {
+        background: #333333;
+        color: #fff;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: 70%;
+        cursor: pointer;
+        height: 65px;
+        width: 65px;
+    }
+    button:active,
+    button:focus {
+        filter: brightness(120%);
+    }
+    .calc-keys {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-row-gap: 15px;
+        grid-column-gap: 10px;
+    }
+    .key-zero {
+        grid-column: span 2;
+        width: 100%;
+        border-radius: 30px;
+    }
+    .key-operate {
+        background: #ff9501;
+    }
+    .key-others {
+        background: #a6a6a6;
+        color: #000000;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="calc-text">
+            <p id="user-input">0</p>
+        </div>
+        <div class="calc-keys">
+            <button type="button" class="key-others operations" data-operation="AC">AC</button>
+            <button type="button" class="key-others operations" data-operation="DEL">DEL</button>
+            <button type="button" class="key-others operations" data-operation="%">%</button>
+            <button type="button" class="key-operate operations" data-operation="/">/</button>
+            <button type="button" class="numbers">7</button>
+            <button type="button" class="numbers">8</button>
+            <button type="button" class="numbers">9</button>
+            <button type="button" class="key-operate operations" data-operation="*">*</button>
+            <button type="button" class="numbers">4</button>
+            <button type="button" class="numbers">5</button>
+            <button type="button" class="numbers">6</button>
+            <button type="button" class="key-operate operations" data-operation="-">-</button>
+            <button type="button" class="numbers">1</button>
+            <button type="button" class="numbers">2</button>
+            <button type="button" class="numbers">3</button>
+            <button type="button" class="key-operate operations" data-operation="+">+</button>
+            <button type="button" class="key-zero numbers">0</button>
+            <button type="button" class="numbers">.</button>
+            <button type="button" class="key-operate operations" data-operation="=">=</button>
+        </div>
+    </div>
+    <script>
+        const inputValue = document.getElementById("user-input");
+        const numbers = document.querySelectorAll(".numbers");
+        const operations = document.querySelectorAll(".operations");
+
+        numbers.forEach(function (item) {
+            item.addEventListener("click", function (e) {
+                if (inputValue.innerText === "NaN") {
+                    inputValue.innerText = "0";
+                }
+                if (inputValue.innerText === "0") {
+                    inputValue.innerText = "";
+                }
+                inputValue.innerText += e.target.innerText.trim();
+            });
+        });
+
+        operations.forEach(function (item) {
+            item.addEventListener("click", function (e) {
+                const operation = e.target.dataset.operation;
+                if (operation === "=") {
+                    try {
+                        inputValue.innerText = eval(inputValue.innerText);
+                    } catch {
+                        inputValue.innerText = "NaN";
+                    }
+                } else if (operation === "AC") {
+                    inputValue.innerText = "0";
+                } else if (operation === "DEL") {
+                    inputValue.innerText = inputValue.innerText.slice(0, -1) || "0";
+                } else {
+                    const lastChar = inputValue.innerText.slice(-1);
+                    if (!isNaN(lastChar) || lastChar === ".") {
+                        inputValue.innerText += operation;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
